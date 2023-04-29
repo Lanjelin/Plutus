@@ -12,7 +12,7 @@ import os
 import sys
 import time
 
-DATABASE = r'database/11_13_2022/'
+DATABASE = r'plutus/database/'
 
 def generate_private_key():
     return binascii.hexlify(os.urandom(32)).decode('utf-8').upper()
@@ -67,12 +67,12 @@ def main(database, args):
 
         if args['verbose']:
             print(address)
-        
+
         if address[-args['substring']:] in database:
             for filename in os.listdir(DATABASE):
                 with open(DATABASE + filename) as file:
                     if address in file.read():
-                        with open('plutus.txt', 'a') as plutus:
+                        with open('plutus/plutus.txt', 'a') as plutus:
                             plutus.write('hex private key: ' + str(private_key) + '\n' +
                                          'WIF private key: ' + str(private_key_to_wif(private_key)) + '\n'
                                          'public key: ' + str(public_key) + '\n' +
