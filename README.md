@@ -2,11 +2,35 @@
 
 A Bitcoin wallet collider that brute forces random wallet addresses
 
-# Like This Project? Give It A Star
+# Made for docker
 
-[![](https://img.shields.io/github/stars/Isaacdelly/Plutus.svg)](https://github.com/Isaacdelly/Plutus)
+This is a fork from <a href="https://github.com/Isaacdelly/Plutus">Isaacdelly/Plutus</a> made to run in docker.
 
-# Dependencies
+# Building the image
+```
+git clone https://github.com/Lanjelin/plutus-docker plutus-docker
+```
+```
+cd plutus-docker && docker build -t plutus-docker .
+```
+
+# Running the container
+
+It's recommended to mount a local folder to the /plutus folder inside the container.  
+This is where the database is stored, and where plutus.py writes to plutus.txt should it find an address.
+```
+docker run -d --name=plutus-docker -v /home/user/plutus:/plutus plutus-docker
+```
+The above will start plutus using default settings, running on all cores.  
+<a href="https://github.com/Lanjelin/plutus-docker#parameters">Parameters</a> are passed using environment variables, all uppercase.
+```
+docker run -d --name=plutus-docker -e VERBOSE=0 -e SUBSTRING=8 -e CPU_COUNT=2 -v /mnt/user/appdata/plutus:/plutus plutus-docker
+```
+Any or none of the parameters above can be parsed, __help__ and __time__ are not parsed when running in docker.  
+Read more at the <a href="https://github.com/Lanjelin/plutus-docker#parameters">parameters</a> section. 
+
+
+# Dependencies running manually
 
 <a href="https://www.python.org/downloads/">Python 3.9</a> or higher
 
@@ -17,13 +41,16 @@ If you have a __Linux__ or __MacOS__ operating system, libgmp3-dev is required. 
 sudo apt-get install libgmp3-dev
 ```
 
-# Installation
+# Manual Installation
 
 ```
-git clone https://github.com/Isaacdelly/Plutus.git plutus
+git clone https://github.com/Lanjelin/plutus-docker plutus-docker
 ```
 ```
-cd plutus && pip3 install -r requirements.txt
+cd plutus-docker && pip3 install -r requirements.txt
+```
+```
+git clone https://github.com/Lanjelin/plutus-db plutus
 ```
 
 # Quick Start
@@ -44,7 +71,7 @@ This program is essentially a brute forcing algorithm. It continuously generates
 
 The private keys are converted into their respective public keys using the `fastecdsa` python library. This is the fastest library to perform secp256k1 signing. If you run this on Windows then `fastecdsa` is not supported, so instead we use `starkbank-ecdsa` to generate public keys. The public keys are converted into their Bitcoin wallet addresses using the `binascii` and `hashlib` standard libraries.
 
-A pre-calculated database of every funded P2PKH Bitcoin address is included in this project. The generated address is searched within the database, and if it is found that the address has a balance, then the private key, public key and wallet address are saved to the text file `plutus.txt` on the user's hard drive.
+A pre-calculated database of every funded P2PKH Bitcoin address is included in this project. The generated address is searched within the database, and if it is found that the address has a balance, then the private key, public key and wallet address are saved to the text file `plutus/plutus.txt` on the user's hard drive.
 
 This program also utilizes multiprocessing through the `multiprocessing.Process()` function in order to make concurrent calculations.
 
@@ -56,7 +83,7 @@ However, through `multiprocessing.Process()` a concurrent process is created for
 
 # Database FAQ
 
-An offline database is used to find the balance of generated Bitcoin addresses. Visit <a href="/database/">/database</a> for information.
+An offline database is used to find the balance of generated Bitcoin addresses. Visit <a href="https://github.com/Lanjelin/plutus-db">/plutus-db</a> for information.
 
 # Parameters
 
@@ -82,7 +109,7 @@ By default the program runs using `python3 plutus.py verbose=0 substring=8` if n
   
 # Expected Output
 
-If a wallet with a balance is found, then all necessary information about the wallet will be saved to the text file `plutus.txt`. An example is:
+If a wallet with a balance is found, then all necessary information about the wallet will be saved to the text file `plutus/plutus.txt`. An example is:
 
 >hex private key: 5A4F3F1CAB44848B2C2C515AE74E9CC487A9982C9DD695810230EA48B1DCEADD<br/>
 >WIF private key: 5JW4RCAXDbocFLK9bxqw5cbQwuSn86fpbmz2HhT9nvKMTh68hjm<br/>
@@ -91,4 +118,4 @@ If a wallet with a balance is found, then all necessary information about the wa
 
 # Recent Improvements & TODO
 
-<a href="https://github.com/Isaacdelly/Plutus/issues">Create an issue</a> so I can add more stuff to improve
+<a href="https://github.com/Lanjelin/plutus-docker/issues">Create an issue</a> so I can add more stuff to improve
