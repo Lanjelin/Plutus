@@ -5,7 +5,7 @@ LABEL maintainer="lanjelin"
 ENV SUBSTRING=8
 ENV VERBOSE=0
 
-COPY ["plutus.py", "plutus.txt", "/"]
+COPY ["plutus.py", "plutus.txt", "entrypoint.sh", "/"]
 
 RUN \
   echo "**** install packages ****" && \
@@ -20,8 +20,6 @@ RUN \
     /tmp/* \
     /var/lib/apt/lists/* \
     /var/tmp/*
-
-COPY entrypoint.sh /entrypoint.sh
 
 VOLUME /plutus
 

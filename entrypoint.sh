@@ -4,7 +4,8 @@
 if ! [ -e /plutus/database/database_aa ]
 then
     echo 'Fething database from github, this may take a few minutes'
-	git clone https://github.com/Lanjelin/plutus-db plutus
+    git clone https://github.com/Lanjelin/plutus-db plutus
+    rm -rf /plutus/.git
 fi
 if ! [ -e /plutus/plutus.txt ]
 then
